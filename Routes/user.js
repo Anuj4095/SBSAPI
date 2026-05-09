@@ -99,8 +99,6 @@ Router.get('/allusers', async(req,res)=>{
 })
 Router.get('/count',async(req,res)=>{
     try{
-        // const token = await req.headers.authorization.split(" ")[1]
-        // const user=  await jwt.verify(token,"ak47")
         const total =await User.countDocuments()
         res.status(200).json({
             Total:total
