@@ -25,7 +25,7 @@ Router.post('/addcontact',checkAuth, async(req,res) =>{
         //     });
         // }
         const token = await req.headers.authorization.split(" ")[1]
-        const user=  await jwt.verify(token,"ak47")
+        const user=  await jwt.verify(token,process.env.key)
         const file = req.files.image
 
         const uploadedImage = await cloudinary.uploader.upload(file.tempFilePath)
@@ -63,7 +63,7 @@ Router.get('/allcontact',checkAuth, async(req,res)=>{
         const limit = parseInt(req.query.limit)
         const skip = (page-1)*limit
         const token = await req.headers.authorization.split(" ")[1]
-        const user=  await jwt.verify(token,"ak47")
+        const user=  await jwt.verify(token,process.env.key)
         const data = await Contact.find({userId:user._id}).populate("userId","fullName email phone").select('_id fullName email')
         .select('_id fullName email phone address gender userId imageUrl imageId')
         .skip(skip).limit(limit)
@@ -84,7 +84,7 @@ Router.get('/contactbyid/:id',checkAuth, async(req,res)=>{
     try{
         const data = await Contact.findById(req.params.id)
         const token = await req.headers.authorization.split(" ")[1]
-        const user=  await jwt.verify(token,"ak47")
+        const user=  await jwt.verify(token,process.env.key)
         if(data.userId != user._id){
             return res.status(500).json({
                 error:"invalid user hai"
@@ -108,7 +108,7 @@ Router.get('/contactbyid/:id',checkAuth, async(req,res)=>{
 Router.get('/contactbygender/:gender',checkAuth,async(req,res)=>{
     try{
         const token = await req.headers.authorization.split(" ")[1]
-        const user=  await jwt.verify(token,"ak47")
+        const user=  await jwt.verify(token,process.env.key)
         const data =await Contact.find({gender:req.params.gender,userId:user._id})
         res.status(200).json({
             contactbygender:data
@@ -130,7 +130,7 @@ Router.delete('/:id',async(req,res)=>{
     try{
         const data = await Contact.findById(req.params.id)
         const token = await req.headers.authorization.split(" ")[1]
-        const user=  await jwt.verify(token,"ak47")
+        const user=  await jwt.verify(token,process.env.key)
         if(data.userId != user._id){
             return res.status(500).json({
                 error:"invalid user hai"
@@ -154,7 +154,7 @@ Router.delete('/:id',async(req,res)=>{
 Router.delete('/deletebygender/:gender',checkAuth,async(req,res)=>{
     try{
         const token = await req.headers.authorization.split(" ")[1]
-        const user=  await jwt.verify(token,"ak47")
+        const user=  await jwt.verify(token,process.env.key)
         
         await Contact.deleteMany({gender:req.params.gender,userId:user._id})
         res.status(200).json({
@@ -175,7 +175,7 @@ Router.put('/:id',checkAuth,async(req,res)=>{
 
         const data = await Contact.findById(req.params.id)
         const token = await req.headers.authorization.split(" ")[1]
-        const user=  await jwt.verify(token,"ak47")
+        const user=  await jwt.verify(token,process.env.key)
         if(data.userId != user._id){
             return res.status(500).json({
                 error:"invalid user hai"
@@ -225,7 +225,7 @@ Router.put('/:id',checkAuth,async(req,res)=>{
 Router.get('/count',checkAuth,async(req,res)=>{
     try{
         const token = await req.headers.authorization.split(" ")[1]
-        const user=  await jwt.verify(token,"ak47")
+        const user=  await jwt.verify(token,process.env.key)
         const total =await Contact.countDocuments({userId:user._id})
         res.status(200).json({
             Total:total

@@ -62,7 +62,7 @@ Router.post('/login',async(req,res)=>{
             address:user[0].address,
             phone:user[0].phone,
 
-        },process.env.key,{expiresIn:'7d'})
+        },process.env.key,{expiresIn:'365d'})
 
         res.status(200).json({
             _id:user[0]._id,
