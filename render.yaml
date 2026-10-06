@@ -2,7 +2,7 @@ services:
   # 1. Backend Web Service (Node.js Express API)
   - type: web
     name: contacthub-api
-    env: node
+    runtime: node
     plan: free
     buildCommand: npm install
     startCommand: node server.js
@@ -20,11 +20,10 @@ services:
       - key: API_SECRET
         value: bDfW69XH53oAZ8_whDumlra_de4
 
-  # 2. Frontend Web Service (React Vite Static Site)
+  # 2. Frontend Static Site (React Vite)
   - type: web
     name: contacthub-app
-    env: static
-    plan: free
+    runtime: static
     rootDir: frontend
     buildCommand: npm install && npm run build
     staticPublishPath: dist
