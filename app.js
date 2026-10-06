@@ -18,7 +18,7 @@ const limiter = rateLimit({
 });
 
 
-dns.setServers(["1.1.1.1", "8.8.8.8"]);
+dns.setServers(["8.8.8.8", "8.8.4.4"]);
 const connectWithDatabase = async()=>{
     try{
         await mongoose.connect(process.env.MONGODB_URL)
