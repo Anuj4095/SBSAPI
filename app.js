@@ -9,19 +9,18 @@ const userRouts = require('./Routes/user')
 const contactRouts = require('./Routes/contact')
 const rateLimit = require('express-rate-limit')
 
+const cors = require('cors')
 const limiter = rateLimit({
-    windowMs: 60 * 1000, // 15 minutes
-    max: 3, // limit each IP to 100 requests per windowMs
-    standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-    legacyHeaders: false,
-    ipv6Subnet:56 // Disable the `X-RateLimit-*` headers
+    windowMs: 60 * 1000, // 1 minute
+    max: 100, // limit each IP to 100 requests per windowMs
+    standardHeaders: true,
+    legacyHeaders: false
 });
 
 
 dns.setServers(["1.1.1.1", "8.8.8.8"]);
 const connectWithDatabase = async()=>{
     try{
-        // await mongoose.connect(process.env.MONGODB_URL)
         await mongoose.connect(process.env.MONGODB_URL)
         console.log('connected with database')
     }
@@ -29,9 +28,10 @@ const connectWithDatabase = async()=>{
         console.log('something is wrong')
         console.log(err)
     }
-
 }
 connectWithDatabase()
+
+app.use(cors())
 app.use(limiter)
 app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -42,6 +42,7 @@ app.use(fileuplode({
 }))
 app.use('/user',userRouts)
 app.use('/contact',contactRouts)
+
 
 
 module.exports = app

@@ -2,9 +2,10 @@ const http = require('http')
 const app = require('./app')
 const server = http.createServer(app)
 
-server.listen(3000,()=>{
-    console.log("server chal raha hai....... ")
-}) 
+const PORT = process.env.PORT || 3000
+server.listen(PORT, () => {
+    console.log(`server chal raha hai on port ${PORT}....... `)
+})
 
 
 
