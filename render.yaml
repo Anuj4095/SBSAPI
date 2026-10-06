@@ -1,0 +1,28 @@
+services:
+  # 1. Backend Web Service (Node.js Express API)
+  - type: web
+    name: sbsapi-backend
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: key
+        value: ak47
+      - key: MONGODB_URL
+        sync: false
+      - key: CLOUD_NAME
+        sync: false
+      - key: API_KEY
+        sync: false
+      - key: API_SECRET
+        sync: false
+
+  # 2. Frontend Web Service (React Vite Static Site)
+  - type: web
+    name: sbsapi-frontend
+    env: static
+    plan: free
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
