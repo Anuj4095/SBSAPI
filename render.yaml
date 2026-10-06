@@ -1,28 +1,37 @@
 services:
   # 1. Backend Web Service (Node.js Express API)
   - type: web
-    name: sbsapi-backend
+    name: contacthub-api
     env: node
     plan: free
     buildCommand: npm install
     startCommand: node server.js
     envVars:
+      - key: PORT
+        value: 10000
       - key: key
         value: ak47
       - key: MONGODB_URL
-        sync: false
+        value: mongodb+srv://ANUJ5599:aa2602@db.xwyqugi.mongodb.net/?appName=DB
       - key: CLOUD_NAME
-        sync: false
+        value: dwlc9djom
       - key: API_KEY
-        sync: false
+        value: 226873333856178
       - key: API_SECRET
-        sync: false
+        value: bDfW69XH53oAZ8_whDumlra_de4
 
   # 2. Frontend Web Service (React Vite Static Site)
   - type: web
-    name: sbsapi-frontend
+    name: contacthub-app
     env: static
     plan: free
     rootDir: frontend
     buildCommand: npm install && npm run build
     staticPublishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://contacthub-api.onrender.com
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
