@@ -60,11 +60,19 @@ export default function Auth({ onLoginSuccess, showToast }) {
         setIsLogin(true); // Switch to login tab
       }
     } catch (err) {
-      const errMsg = err.response?.data?.error || 'Something went wrong. Please check your credentials.';
+      let errMsg = 'Something went wrong.';
+      if (err.response?.data?.error) {
+        errMsg = err.response.data.error;
+      } else if (err.code === 'ERR_NETWORK' || !err.response) {
+        errMsg = 'Cannot connect to backend server. Make sure backend is running on port 3000.';
+      } else {
+        errMsg = err.message || 'Authentication error';
+      }
       showToast(errMsg, 'error');
     } finally {
       setLoading(false);
     }
+
   };
 
   return (
